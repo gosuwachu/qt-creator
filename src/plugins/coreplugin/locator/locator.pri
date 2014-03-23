@@ -12,7 +12,8 @@ HEADERS += \
     $$PWD/locatormanager.h \
     $$PWD/basefilefilter.h \
     $$PWD/executefilter.h \
-    $$PWD/locatorsearchutils.h
+    $$PWD/locatorsearchutils.h \
+    $$PWD/locatormodalwidget.h
 
 SOURCES += \
     $$PWD/locator.cpp \
@@ -27,7 +28,8 @@ SOURCES += \
     $$PWD/basefilefilter.cpp \
     $$PWD/ilocatorfilter.cpp \
     $$PWD/executefilter.cpp \
-    $$PWD/locatorsearchutils.cpp
+    $$PWD/locatorsearchutils.cpp \
+    $$PWD/locatormodalwidget.cpp
 
 FORMS += \
     $$PWD/settingspage.ui \

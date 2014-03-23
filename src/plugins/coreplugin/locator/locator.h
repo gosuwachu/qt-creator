@@ -83,6 +83,13 @@ private:
     template <typename S>
     void loadSettingsHelper(S *settings);
 
+    enum LocatorStyle
+    {
+        LocatorStyleNormal,
+        LocatorStyleDetached
+    };
+    LocatorStyle m_locatorStyle;
+
     LocatorWidget *m_locatorWidget;
     SettingsPage *m_settingsPage;
 

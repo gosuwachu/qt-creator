@@ -217,7 +217,8 @@ void CompletionList::updatePreferredSize()
 
 // =========== LocatorWidget ===========
 
-LocatorWidget::LocatorWidget(Locator *qop) :
+LocatorWidget::LocatorWidget(Locator *qop, QWidget *parent) :
+    QWidget(parent),
     m_locatorPlugin(qop),
     m_locatorModel(new LocatorModel(this)),
     m_completionList(new CompletionList(this)),
@@ -532,6 +533,8 @@ void LocatorWidget::acceptCurrentEntry()
     m_completionList->hide();
     m_fileLineEdit->clearFocus();
     entry.filter->accept(entry);
+
+    setVisible(false);
 }
 
 void LocatorWidget::show(const QString &text, int selectionStart, int selectionLength)
@@ -542,7 +545,8 @@ void LocatorWidget::show(const QString &text, int selectionStart, int selectionL
         m_fileLineEdit->setFocus();
     else
         showPopupNow();
-    ICore::raiseWindow(ICore::mainWindow());
+// TODO: why we need this here?
+//    ICore::raiseWindow(ICore::mainWindow());
 
     if (selectionStart >= 0) {
         m_fileLineEdit->setSelection(selectionStart, selectionLength);

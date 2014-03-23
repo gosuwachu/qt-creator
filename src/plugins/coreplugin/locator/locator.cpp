@@ -69,7 +69,8 @@ namespace {
 }
 
 Locator::Locator()
-    : m_settingsInitialized(false)
+    : m_settingsInitialized(false),
+      m_locatorStyle(LocatorStyle::LocatorStyleDetached)
 {
     m_corePlugin = 0;
     m_refreshTimer.setSingleShot(false);
@@ -96,13 +97,29 @@ void Locator::initialize(CorePlugin *corePlugin, const QStringList &, QString *)
     m_settingsPage = new SettingsPage(this);
     m_corePlugin->addObject(m_settingsPage);
 
-    m_locatorWidget = new LocatorWidget(this);
-    m_locatorWidget->setEnabled(false);
-    StatusBarWidget *view = new StatusBarWidget;
-    view->setWidget(m_locatorWidget);
-    view->setContext(Context("LocatorWidget"));
-    view->setPosition(StatusBarWidget::First);
-    m_corePlugin->addAutoReleasedObject(view);
+    // TODO: add ability to switch between styles from settings
+    if(m_locatorStyle == LocatorStyle::LocatorStyleDetached)
+    {
+        m_locatorWidget = new LocatorWidget(this, ICore::mainWindow());
+        m_locatorWidget->setEnabled(false);
+        m_locatorWidget->setWindowFlags(m_locatorWidget->windowFlags() |= Qt::Popup);
+        m_locatorWidget->resize(730, 10);
+
+        // TODO: make locator center on the main window
+        m_locatorWidget->move(QApplication::desktop()->availableGeometry().center() - m_locatorWidget->rect().center());
+
+    }
+    else
+    {
+        m_locatorWidget = new LocatorWidget(this);
+        m_locatorWidget->setEnabled(false);
+
+        StatusBarWidget *view = new StatusBarWidget;
+        view->setWidget(m_locatorWidget);
+        view->setContext(Context("LocatorWidget"));
+        view->setPosition(StatusBarWidget::First);
+        m_corePlugin->addAutoReleasedObject(view);
+    }
 
     QAction *action = new QAction(m_locatorWidget->windowIcon(), m_locatorWidget->windowTitle(), this);
     Command *cmd = ActionManager::registerAction(action, "QtCreator.Locate",
@@ -145,6 +162,11 @@ void Locator::updatePlaceholderText(Command *command)
 
 void Locator::openLocator()
 {
+    // TODO: move this somewhere else?
+    if(m_locatorStyle == LocatorStyle::LocatorStyleDetached)
+    {
+        m_locatorWidget->setVisible(true);
+    }
     m_locatorWidget->show(QString());
 }
 

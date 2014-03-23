@@ -56,7 +56,7 @@ class LocatorWidget
     Q_OBJECT
 
 public:
-    explicit LocatorWidget(Locator *qop);
+    explicit LocatorWidget(Locator *qop, QWidget *parent = 0);
 
     void updateFilterList();
 
