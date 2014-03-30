@@ -257,6 +257,7 @@ LocatorWidget::LocatorWidget(Locator *qop, QWidget *parent) :
     // We set click focus since otherwise you will always get two popups
     m_fileLineEdit->setButtonFocusPolicy(Utils::FancyLineEdit::Left, Qt::ClickFocus);
     m_fileLineEdit->setAttribute(Qt::WA_MacShowFocusRect, false);
+    connect(m_fileLineEdit, SIGNAL(editingFinished()), this, SLOT(hide()));
 
     m_fileLineEdit->installEventFilter(this);
     this->installEventFilter(this);
